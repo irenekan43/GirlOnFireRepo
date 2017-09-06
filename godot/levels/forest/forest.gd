@@ -19,13 +19,15 @@ var trees
 #misc
 var girl
 
+var viewport_width
+
 func _ready():
 	girl = get_node("Girl")
 	var camera = get_node("Girl/Camera2D").get_viewport_rect()
 	#print(camera)
 	#print(get_viewport().get_visible_rect())
 	#print(BACKGROUND.get_size())
-	var viewport_width = get_viewport_rect().size.x
+	viewport_width = get_viewport_rect().size.x
 	var ground_width = GROUND.get_width()
 	
 	tiles = []
@@ -84,8 +86,22 @@ func _process(delta):
 	base_background.translate(Vector2(delta*100,0))
 	girl.translate(Vector2(delta*500, 0))
 	base_foreground.translate(Vector2(-delta*600,0))
+	_update_obstacles(trees)
 	#print(girl.get_pos().x)
 	#print(delta)
+
+func _update_obstacles(var obstacles):
+	#print(obstacles[0])
+	var current_position = girl.get_pos().x
+	
+	for obstacle in obstacles:
+		#print(obstacle.get_pos())
+		obstacle.update(current_position)
+		if (obstacle.get_pos().x > current_position+viewport_width):
+			break
+	
+	while (obstacles[0].get_pos().x < current_position-viewport_width):
+		obstacles.pop_front()
 
 func _add_obstacles(var start, var end, var obstacle_preload):
 	var obstacles = []
