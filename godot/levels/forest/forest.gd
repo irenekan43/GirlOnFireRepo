@@ -20,11 +20,14 @@ var scarecrows
 
 #misc
 var girl
+var girl_speed
+
 
 var viewport_width
 
 func _ready():
 	girl = get_node("Girl")
+	girl_speed = 250
 	var camera = get_node("Girl/Camera2D").get_viewport_rect()
 	#print(camera)
 	#print(get_viewport().get_visible_rect())
@@ -54,13 +57,22 @@ func _ready():
 	container_foreground = _add_parallax(min_range, max_range*2, FOREGROUND, 200)
 	
 	set_process(true)
+	set_process_input(true)
+
+func _input(event):
+	if (event.is_pressed()):
+		if (event.is_action("ui_left")):
+			girl_speed = max(0, girl_speed - 100)
+		if (event.is_action("ui_right")):
+			girl_speed = min(500, girl_speed + 5)
 
 func _process(delta):
-	container_foreground.translate(Vector2(-delta*600,0))
+	var delta_girl_speed = delta*girl_speed/500
+	container_foreground.translate(Vector2(-delta_girl_speed*600,0))
 	#container_ground.translate(Vector2(delta*0))
-	container_background.translate(Vector2(delta*400,0))
-	container_sky.translate(Vector2(delta*490,0))
-	girl.translate(Vector2(delta*500, 0))
+	container_background.translate(Vector2(delta_girl_speed*400,0))
+	container_sky.translate(Vector2(delta_girl_speed*490,0))
+	girl.translate(Vector2(delta_girl_speed*500, 0))
 	_update_obstacles(trees)
 	_update_obstacles(scarecrows)
 	#print(girl.get_pos().x)
