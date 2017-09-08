@@ -8,27 +8,53 @@
 _code = {
 "fragment": "// colors that will be used
 
-uniform color color_1 = vec4(0.5, 0.2, 0.2, 1);
-uniform color color_2 = vec4(0.5, 0.2, 0.4, 1);
-uniform color color_3 = vec4(0.3, 0.2, 0.5, 1);
-uniform color color_4 = vec4(0.3, 0.2, 0.3, 1);
-uniform float n = 0.2;
+uniform color color_1 = vec4(0.74, 0.41, 0.26, 1);
+uniform color color_2 = vec4(0.65, 0.29, 0.2, 1);
+uniform color color_3 = vec4(0.41, 0.19, 0.14, 1);
+uniform color color_4 = vec4(0.29, 0.16, 0.13, 1);
+uniform float n = 1;
 
 // color offset - chances threshold of color adjustments
 uniform float offset = 0.5;
-
+ 
 //get pixel color from screen
 color pixel_color = vec4(texscreen(SCREEN_UV),1);
 
-vec4 colorize(vec4 pixcol)
+vec4 to_grayscale(vec4 pixcol)
+{
+	float average = (pixcol.r + pixcol.g + pixcol.b)/3;
+	return vec4(average, average, average, 1);
+}
+
+vec4 colorize(vec4 pixcol, vec4 grayscale)
 {
 	color new_color;
-	new_color = vec4(pixcol.r + (1 - pixcol.r)*n, pixcol.g + (1 - pixcol.g)*n/3,pixcol.b + (1 - pixcol.b)*n/3,1);
+	//new_color = vec4(pixcol.r + (1 - pixcol.r)*n, pixcol.g + (1 - pixcol.g)*n/3,pixcol.b + (1 - pixcol.b)*n/3,1);
+	if (grayscale.r >= 0)
+	{
+		//new_color = vec4((pixcol.r*(1-n) + color_4.r*n)/2, (pixcol.g*(1-n) + color_4.g*n)/2, (pixcol.b*(1-n) + color_4.b*n)/2, 1);
+		new_color = vec4(color_4.r, color_4.g, color_4.b, n);
+		if (grayscale.r > 0.2)
+		{
+			//new_color = vec4((pixcol.r*(1-n) + color_3.r*n)/2, (pixcol.g*(1-n) + color_3.g*n)/2, (pixcol.b*(1-n) + color_3.b*n)/2, 1);
+			new_color = vec4(color_3.r, color_3.g, color_3.b, n);
+			if (grayscale.r > 0.4)
+			{
+				//new_color = vec4((pixcol.r*(1-n) + color_2.r*n)/2, (pixcol.g*(1-n) + color_2.g*n)/2, (pixcol.b*(1-n) + color_2.b*n)/2, 1);
+				new_color = vec4(color_2.r, color_2.g, color_2.b, n);
+				if (grayscale.r > 0.5)
+				{
+					new_color = vec4((pixcol.r*(1-n) + color_1.r*n)/2, (pixcol.g*(1-n) + color_1.g*n)/2, (pixcol.b*(1-n) + color_1.b*n)/2, 1);
+					new_color = vec4(color_1.r, color_1.g, color_1.b, n);
+				}
+			}
+		}
+	}
 	return new_color;
 }
 
 //color grayscale
-COLOR = colorize(pixel_color);",
+COLOR = colorize(pixel_color,to_grayscale(pixel_color));",
 "fragment_ofs": 0,
 "light": "",
 "light_ofs": 0,
@@ -39,12 +65,12 @@ COLOR = colorize(pixel_color);",
 [sub_resource type="CanvasItemMaterial" id=2]
 
 shader/shader = SubResource( 1 )
-shader/shading_mode = 0
-shader_param/color_1 = Color( 0.5, 0.2, 0.2, 1 )
-shader_param/color_2 = Color( 0.5, 0.2, 0.4, 1 )
-shader_param/color_3 = Color( 0.3, 0.2, 0.5, 1 )
-shader_param/color_4 = Color( 0.3, 0.2, 0.3, 1 )
-shader_param/n = 0.2
+shader/shading_mode = 1
+shader_param/color_1 = Color( 0.933594, 0.57424, 0.415741, 1 )
+shader_param/color_2 = Color( 0.816406, 0.352593, 0.24556, 1 )
+shader_param/color_3 = Color( 0.515625, 0.178505, 0.100708, 1 )
+shader_param/color_4 = Color( 0.316406, 0.0961154, 0.0852814, 1 )
+shader_param/n = 0.8
 shader_param/offset = 0.5
 
 [node name="Node2D" type="Control"]
@@ -60,6 +86,7 @@ margin/bottom = 0.0
 
 [node name="Sprite" type="Sprite" parent="."]
 
+transform/scale = Vector2( 1.5, 1.75 )
 texture = ExtResource( 1 )
 
 [node name="Overlay" type="Node2D" parent="."]
@@ -77,10 +104,10 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
-margin/left = 2.0
-margin/top = -363.0
-margin/right = 643.0
-margin/bottom = 357.0
+margin/left = -1.0
+margin/top = -379.0
+margin/right = 717.0
+margin/bottom = 379.0
 texture = ExtResource( 2 )
 stretch_mode = 2
 
