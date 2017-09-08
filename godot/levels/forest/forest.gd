@@ -20,6 +20,7 @@ var scarecrows
 
 #misc
 var girl
+var girl_sprite
 var girl_speed
 
 
@@ -27,6 +28,8 @@ var viewport_width
 
 func _ready():
 	girl = get_node("Girl")
+	girl_sprite = get_node("Girl/AnimatedSprite")
+	#girl_sprite.play()
 	girl_speed = 250
 	var camera = get_node("Girl/Camera2D").get_viewport_rect()
 	#print(camera)
@@ -67,6 +70,8 @@ func _input(event):
 			girl_speed = min(500, girl_speed + 5)
 
 func _process(delta):
+	_animate_girl_walk(delta)
+		
 	var delta_girl_speed = delta*girl_speed/500
 	container_foreground.translate(Vector2(-delta_girl_speed*600,0))
 	#container_ground.translate(Vector2(delta*0))
@@ -114,3 +119,14 @@ func _add_parallax(var widths_left, var widths_right, var texture, var z_index):
 	parallax_base.set_z(z_index)
 	add_child(parallax_base)
 	return parallax_base
+	
+# struggle manual animate since setting animation speed gets stuck sometimes
+# girl_sprite.get_sprite_frames().set_animation_speed("girlwalk1_250", sprite_speed)
+var elapse_sec = 0
+func _animate_girl_walk(var delta):
+	var girl_speed_fps = girl_speed/50.0 + 0.0001
+	elapse_sec = elapse_sec + delta
+	if (elapse_sec > 1 / girl_speed_fps):
+		elapse_sec = 0
+		var frame_count = girl_sprite.get_sprite_frames().get_frame_count("girlwalk1_250")
+		girl_sprite.set_frame((girl_sprite.get_frame()+1) % frame_count)
