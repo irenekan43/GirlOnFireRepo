@@ -1,9 +1,12 @@
-[gd_scene load_steps=5 format=1]
+[gd_scene load_steps=8 format=1]
 
 [ext_resource path="res://levels/forest/forest.gd" type="Script" id=1]
 [ext_resource path="res://girl/Girl.tscn" type="PackedScene" id=2]
-[ext_resource path="res://misc/ParallaxContainer.tscn" type="PackedScene" id=3]
-[ext_resource path="res://levels/ForestPainted/painted background.png" type="Texture" id=4]
+[ext_resource path="res://levels/ForestPainted/PaintedTransition.gd" type="Script" id=3]
+[ext_resource path="res://misc/ParallaxContainer.tscn" type="PackedScene" id=4]
+[ext_resource path="res://levels/ForestPainted/ForestTestBG 1.png" type="Texture" id=5]
+[ext_resource path="res://levels/ForestPainted/ForestTestBG 2.png" type="Texture" id=6]
+[ext_resource path="res://levels/ForestPainted/ForestTestBG 3.png" type="Texture" id=7]
 
 [node name="ForestPainted" type="Node2D"]
 
@@ -13,12 +16,29 @@ script/script = ExtResource( 1 )
 
 [node name="ParallaxContainers" type="Node" parent="."]
 
-[node name="ParallaxContainer" parent="ParallaxContainers" instance=ExtResource( 3 )]
+script/script = ExtResource( 3 )
 
-transform/scale = Vector2( 1.7, 1.7 )
+[node name="BG1" parent="ParallaxContainers" instance=ExtResource( 4 )]
+
 z/z = 498
 widths_left = 1
 widths_right = 11
-texture = ExtResource( 4 )
+texture = ExtResource( 5 )
+
+[node name="BG2" parent="ParallaxContainers" instance=ExtResource( 4 )]
+
+visibility/opacity = 0.0
+z/z = 498
+widths_left = 1
+widths_right = 11
+texture = ExtResource( 6 )
+
+[node name="BG3" parent="ParallaxContainers" instance=ExtResource( 4 )]
+
+visibility/opacity = 0.0
+z/z = 498
+widths_left = 1
+widths_right = 11
+texture = ExtResource( 7 )
 
 
