@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=1]
+
+[ext_resource path="res://misc/ParallaxContainer.gd" type="Script" id=1]
+
+[node name="ParallaxContainer" type="Node2D" groups=[
+"ParallaxContainer",
+]]
+
+script/script = ExtResource( 1 )
+widths_left = null
+widths_right = null
+texture = null
+
+

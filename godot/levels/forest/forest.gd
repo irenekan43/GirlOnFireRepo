@@ -1,18 +1,10 @@
 extends Node2D
 
-const GROUND = preload("res://levels/forest/ground.png")
-const SKY = preload("res://levels/forest/sky.png")
-const FOREGROUND = preload("res://levels/forest/foreground.png")
-const BACKGROUND = preload("res://levels/forest/background.png")
-
 const TREE = preload("res://levels/forest/objects/Tree.tscn")
 const SCARECROW = preload("res://levels/forest/objects/Scarecrow.tscn")
 
 #environment
-var container_ground
-var container_sky
-var container_background
-var container_foreground
+var parallax_containers
 
 #obstacles
 var trees
@@ -24,46 +16,37 @@ var girl
 
 func _ready():
 	girl = get_node("Girl")
-	#print(get_viewport().get_visible_rect())
-	#print(BACKGROUND.get_size())
+	parallax_containers = get_tree().get_nodes_in_group("ParallaxContainer")
+
 	viewport_width = get_viewport_rect().size.x
-	var ground_width = GROUND.get_width()
+	var ground_width = 1920
 	
-	#print(viewport_width)
-	#print(background_width)
 	
 	var min_range = ceil(viewport_width/2/ground_width)
 	var max_range = min_range*10
 	print("[forest.tscn]: range(%s,%s)" % [-min_range, max_range])
 	
 	# how far to keep spawning obstacles
-	var max_dist = max_range*SKY.get_width()
+	var max_dist = max_range*1920
 	#print(max_dist)
-	
-	container_sky = _add_parallax(1, 1, SKY, 0)
-	container_background = _add_parallax(min_range, max_range, BACKGROUND, 50)
 
-	trees = _add_obstacles(0, max_dist, TREE, 100)
-	scarecrows = _add_obstacles(0, max_dist, SCARECROW, 100)
+	girl.set_z(499)
 	
-	container_ground = _add_parallax(min_range, max_range, GROUND, 150)
-	container_foreground = _add_parallax(min_range, max_range*2, FOREGROUND, 200)
+	trees = _add_obstacles(0, max_dist, TREE, 499)
+	scarecrows = _add_obstacles(0, max_dist, SCARECROW, 499)
 	
 	set_process(true)
 	
 func _process(delta):
 	var girl_speed = girl.get_girl_speed()
-	print(girl_speed)
 	var delta_girl_speed = delta*girl_speed/500
-	container_foreground.translate(Vector2(-delta_girl_speed*600,0))
-	#container_ground.translate(Vector2(delta*0))
-	container_background.translate(Vector2(delta_girl_speed*400,0))
-	container_sky.translate(Vector2(delta_girl_speed*490,0))
 	girl.translate(Vector2(delta_girl_speed*500, 0))
 	_update_obstacles(trees)
 	_update_obstacles(scarecrows)
 	#print(girl.get_pos().x)
 	#print(delta)
+	for container in parallax_containers:
+		container.parallax_translate(delta_girl_speed)
 
 func _update_obstacles(var obstacles):
 	#print(obstacles[0])
@@ -90,14 +73,3 @@ func _add_obstacles(var start, var end, var obstacle_preload, var z_index):
 		add_child(obstacle)
 		obstacles.append(obstacle)
 	return obstacles
-
-func _add_parallax(var widths_left, var widths_right, var texture, var z_index):
-	var parallax_base = Node2D.new()
-	for x in range(-widths_left, widths_right):
-		var tile = Sprite.new()
-		tile.set_texture(texture)
-		tile.set_pos(Vector2(x*texture.get_width(),0))
-		parallax_base.add_child(tile)
-	parallax_base.set_z(z_index)
-	add_child(parallax_base)
-	return parallax_base

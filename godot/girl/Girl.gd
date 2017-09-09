@@ -13,7 +13,6 @@ func _ready():
 	girl_sprite = get_node("./Sprite")
 	#girl_sprite.play()
 	girl_speed = 250
-	girl.set_z(100)
 	#var camera = get_node("./Camera2D").get_viewport_rect()
 	#print(camera)
 	set_process_input(true)
