@@ -29,7 +29,8 @@ drag_margin/bottom = 0.2
 
 [node name="Sprite" type="Sprite" parent="."]
 
-transform/pos = Vector2( 0, 210 )
+transform/pos = Vector2( 0, 140 )
+transform/scale = Vector2( 1.2, 1.2 )
 texture = ExtResource( 2 )
 hframes = 4
 
