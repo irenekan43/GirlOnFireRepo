@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=1]
+[gd_scene load_steps=4 format=1]
 
 [ext_resource path="res://girl/Girl.gd" type="Script" id=1]
-[ext_resource path="res://girl/girl fire cycle sheet.png" type="Texture" id=2]
+[ext_resource path="res://girl/girl walk cycle sheet.png" type="Texture" id=2]
+[ext_resource path="res://girl/fire animation.png" type="Texture" id=3]
 
 [node name="Girl" type="Node2D"]
 
@@ -27,11 +28,19 @@ drag_margin/top = 0.2
 drag_margin/right = 0.2
 drag_margin/bottom = 0.2
 
-[node name="Sprite" type="Sprite" parent="."]
+[node name="Node2D" type="Node2D" parent="."]
 
 transform/pos = Vector2( 0, 140 )
 transform/scale = Vector2( 1.2, 1.2 )
+
+[node name="Girl" type="Sprite" parent="Node2D"]
+
 texture = ExtResource( 2 )
+hframes = 4
+
+[node name="On Fire" type="Sprite" parent="Node2D"]
+
+texture = ExtResource( 3 )
 hframes = 4
 
 

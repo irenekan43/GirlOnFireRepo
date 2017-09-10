@@ -27,7 +27,7 @@ func _ready():
 	
 	var min_range = ceil(viewport_width/2/ground_width)
 	var max_range = min_range*10
-	print("[forest.tscn]: range(%s,%s)" % [-min_range, max_range])
+	print("[forest.gd]: range(%s,%s)" % [-min_range, max_range])
 	
 	# how far to keep spawning obstacles
 	var max_dist = max_range*1920
@@ -55,7 +55,7 @@ func _process(delta):
 	_update_world_health()
 		
 func _update_world_health():
-	print(world_health)
+	print("[forest.gd]: %s" % world_health)
 	fire_shader.set_shader_opacity((100 - world_health)/100)
 
 func _update_obstacles(var obstacles):
