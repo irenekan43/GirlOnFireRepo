@@ -14,6 +14,9 @@ var viewport_width
 
 var girl
 
+var world_health = 100
+onready var fire_shader = get_node("Girl/Shaders")
+
 func _ready():
 	girl = get_node("Girl")
 	parallax_containers = get_tree().get_nodes_in_group("ParallaxContainer")
@@ -44,9 +47,16 @@ func _process(delta):
 	_update_obstacles(trees)
 	_update_obstacles(scarecrows)
 	#print(girl.get_pos().x)
-	#print(delta)
+
 	for container in parallax_containers:
 		container.parallax_translate(delta_girl_speed)
+	
+	world_health = max(0, world_health - delta)
+	_update_world_health()
+		
+func _update_world_health():
+	print(world_health)
+	fire_shader.set_shader_opacity((100 - world_health)/100)
 
 func _update_obstacles(var obstacles):
 	#print(obstacles[0])
