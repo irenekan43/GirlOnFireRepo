@@ -5,6 +5,9 @@ const SCARECROW = preload("res://levels/forest/objects/Scarecrow.tscn")
 
 const OVERLOOK = preload("res://levels/ForestPaintedLayer/OverlookScene_Placeholder.png")
 
+onready var stream_player = get_node("StreamPlayer")
+onready var sample_player = get_node("SamplePlayer")
+
 #environment
 var parallax_containers
 
@@ -26,7 +29,6 @@ func _ready():
 	viewport_width = get_viewport_rect().size.x
 	var ground_width = 1920
 	
-	
 	var min_range = ceil(viewport_width/2/ground_width)
 	var max_range = min_range*10
 	print("[forest.gd]: range(%s,%s)" % [-min_range, max_range])
@@ -40,11 +42,18 @@ func _ready():
 	overlook.set_z(500)
 	add_child(overlook)
 	
-
 	girl.set_z(501)
 	
 	trees = _add_obstacles(0, max_dist, TREE, 501)
 	scarecrows = _add_obstacles(0, max_dist, SCARECROW, 501)
+	
+	# audio init
+	stream_player.play()
+	_play_sfx("crackling")
+	_play_sfx("fire_3")
+	_play_sfx("fire_2")
+	_play_sfx("silky")
+	_play_sfx("bkgd_burn")
 	
 	set_process(true)
 	
@@ -91,3 +100,8 @@ func _add_obstacles(var start, var end, var obstacle_preload, var z_index):
 		add_child(obstacle)
 		obstacles.append(obstacle)
 	return obstacles
+	
+
+func _play_sfx(var name):
+	sample_player.play(name)
+
