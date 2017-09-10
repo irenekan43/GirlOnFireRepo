@@ -30,6 +30,8 @@ func _input(event):
 			girl_speed = min(500, girl_speed + 5)
 
 func _process(delta):
+	if (get_pos().x >= 19240):
+		girl_speed = 0
 	_animate_girl_walk(delta)
 	_animate_fire(delta)
 

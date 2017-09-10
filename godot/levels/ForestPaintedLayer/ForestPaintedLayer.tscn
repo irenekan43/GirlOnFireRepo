@@ -32,14 +32,14 @@ texture = ExtResource( 5 )
 
 [node name="Midground" parent="ParallaxContainers" instance=ExtResource( 4 )]
 
-z/z = 498
+z/z = 500
 widths_left = 1
 widths_right = 10
 texture = ExtResource( 6 )
 
 [node name="Ground" parent="ParallaxContainers" instance=ExtResource( 4 )]
 
-z/z = 498
+z/z = 500
 widths_left = 1
 widths_right = 10
 texture = ExtResource( 7 )

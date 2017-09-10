@@ -10,6 +10,8 @@ func _input_event(viewport, event, shape_idx):
 				set_opacity(0)
 
 func update(var girl_position):
+	if (get_pos().x > 19200):
+		set_opacity(0)
 	if (hp == 0):
 		return
 	var proximity = max(get_pos().x - girl_position, 0)

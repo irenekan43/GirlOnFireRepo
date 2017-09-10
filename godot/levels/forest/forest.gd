@@ -3,6 +3,8 @@ extends Node2D
 const TREE = preload("res://levels/forest/objects/Tree.tscn")
 const SCARECROW = preload("res://levels/forest/objects/Scarecrow.tscn")
 
+const OVERLOOK = preload("res://levels/ForestPaintedLayer/OverlookScene_Placeholder.png")
+
 #environment
 var parallax_containers
 
@@ -31,25 +33,31 @@ func _ready():
 	
 	# how far to keep spawning obstacles
 	var max_dist = max_range*1920
-	#print(max_dist)
-
-	girl.set_z(499)
+	#print(max_dist) 19200
+	var overlook = Sprite.new()
+	overlook.set_pos(Vector2(max_dist, 0))
+	overlook.set_texture(OVERLOOK)
+	overlook.set_z(500)
+	add_child(overlook)
 	
-	trees = _add_obstacles(0, max_dist, TREE, 499)
-	scarecrows = _add_obstacles(0, max_dist, SCARECROW, 499)
+
+	girl.set_z(501)
+	
+	trees = _add_obstacles(0, max_dist, TREE, 501)
+	scarecrows = _add_obstacles(0, max_dist, SCARECROW, 501)
 	
 	set_process(true)
 	
 func _process(delta):
-	var girl_speed = girl.get_girl_speed()
-	var delta_girl_speed = delta*girl_speed/500
-	girl.translate(Vector2(delta_girl_speed*500, 0))
-	_update_obstacles(trees)
-	_update_obstacles(scarecrows)
-	#print(girl.get_pos().x)
-
-	for container in parallax_containers:
-		container.parallax_translate(delta_girl_speed)
+	print("[forest.gd]: pos = %s" % girl.get_pos().x)
+	if (girl.get_pos().x < 19240):
+		var girl_speed = girl.get_girl_speed()
+		var delta_girl_speed = delta*girl_speed/500
+		girl.translate(Vector2(delta_girl_speed*500, 0))
+		_update_obstacles(trees)
+		_update_obstacles(scarecrows)
+		for container in parallax_containers:
+			container.parallax_translate(delta_girl_speed)
 	
 	world_health = max(0, world_health - delta)
 	_update_world_health()
