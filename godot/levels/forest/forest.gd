@@ -58,7 +58,7 @@ func _ready():
 	set_process(true)
 	
 func _process(delta):
-	print("[forest.gd]: pos = %s" % girl.get_pos().x)
+	#print("[forest.gd]: pos = %s" % girl.get_pos().x)
 	if (girl.get_pos().x < 19240):
 		var girl_speed = girl.get_girl_speed()
 		var delta_girl_speed = delta*girl_speed/500
@@ -72,7 +72,7 @@ func _process(delta):
 	_update_world_health()
 		
 func _update_world_health():
-	print("[forest.gd]: %s" % world_health)
+	#print("[forest.gd]: %s" % world_health)
 	fire_shader.set_shader_opacity((100 - world_health)/100)
 
 func _update_obstacles(var obstacles):
